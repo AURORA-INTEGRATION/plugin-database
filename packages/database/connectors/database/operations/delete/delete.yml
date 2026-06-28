@@ -1,0 +1,36 @@
+kind: python_service
+id: common.connectors.database.delete
+name: Database — Delete
+script: connectors/database/operations/delete/delete.py
+input:
+  db_alias:
+    type: string
+    required: true
+    description: Nome dell'istanza connector di tipo database.
+  table:
+    type: string
+    required: true
+    description: Tabella da cui eliminare.
+  where:
+    type: array
+    required: false
+    description: "Condizioni: lista di { field, op, value }. Obbligatorie salvo allow_no_where."
+  allow_no_where:
+    type: boolean
+    required: false
+    description: Consenti DELETE senza WHERE (svuota la tabella). Default false.
+output:
+  affected_rows:
+    type: integer
+    description: Righe eliminate.
+  sql:
+    type: string
+    description: SQL effettivamente eseguito.
+
+ui:
+  mode: query-builder
+  operation: delete
+  fields:
+    - { name: table, label: Tabella, type: table-picker, source: tables, required: true }
+    - { name: where, label: Condizioni, type: condition-list, dependsOn: table }
+  preview: sql

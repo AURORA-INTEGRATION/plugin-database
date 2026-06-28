@@ -1,0 +1,62 @@
+kind: python_service
+id: common.connectors.database.select
+name: Database — Select
+script: connectors/database/operations/select/select.py
+input:
+  db_alias:
+    type: string
+    required: true
+    description: Nome dell'istanza connector di tipo database.
+  table:
+    type: string
+    required: false
+    description: Tabella da interrogare (ignorata se passi `sql`).
+  columns:
+    type: array
+    required: false
+    description: Colonne da selezionare (vuoto = tutte).
+  where:
+    type: array
+    required: false
+    description: "Condizioni: lista di { field, op, value }. op: eq|ne|gt|gte|lt|lte|like|ilike|in|is_null|not_null."
+  order_by:
+    type: array
+    required: false
+    description: "Ordinamento: lista di { field, dir } (dir: asc|desc)."
+  limit:
+    type: integer
+    required: false
+    description: Numero massimo di righe.
+  sql:
+    type: string
+    required: false
+    description: SQL manuale (override del query-builder). Usa `:nome` per i parametri.
+  params:
+    type: object
+    required: false
+    description: Valori dei parametri nominati per `sql`.
+output:
+  rows:
+    type: array
+    description: Righe come oggetti.
+  count:
+    type: integer
+    description: Numero di righe.
+  sql:
+    type: string
+    description: SQL effettivamente eseguito.
+
+# ── Studio UI (designer renders this form; engine ignores it) ──
+ui:
+  mode: query-builder
+  operation: select
+  fields:
+    - { name: table, label: Tabella, type: table-picker, source: tables, required: true }
+    - { name: columns, label: Colonne, type: column-multiselect, source: columns, dependsOn: table }
+    - { name: where, label: Condizioni, type: condition-list, dependsOn: table }
+    - { name: order_by, label: Ordinamento, type: order-list, dependsOn: table }
+    - { name: limit, label: Limite, type: number }
+  preview: sql
+  advanced:
+    - { name: sql, label: SQL manuale, type: code, language: sql }
+    - { name: params, label: Parametri, type: keyvalue }

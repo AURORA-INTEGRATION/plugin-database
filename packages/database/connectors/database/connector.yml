@@ -1,0 +1,70 @@
+kind: connector
+id: common.connectors.database
+type: database
+name: Database
+description: SQL database connection (PostgreSQL, MySQL, SQLite, MSSQL, Oracle)
+icon: Database
+fields:
+  driver:
+    type: string
+    required: true
+    description: Database driver
+    placeholder: "postgresql"
+    options:
+      - postgresql
+      - mysql
+      - sqlite
+      - mssql
+      - oracle
+  host:
+    type: string
+    required: true
+    description: Database host
+    placeholder: "localhost"
+  port:
+    type: integer
+    required: false
+    description: Database port (default per driver)
+    placeholder: "5432"
+  username:
+    type: string
+    required: true
+    description: Database username
+    placeholder: "postgres"
+  password:
+    type: string
+    required: true
+    secret: true
+    description: Database password
+    placeholder: "password"
+  database:
+    type: string
+    required: true
+    description: Database name (or file path for sqlite)
+    placeholder: "mydb"
+  options:
+    type: object
+    required: false
+    description: Extra SQLAlchemy engine options (pool_size, connect_args, etc.)
+
+# ── Studio metadata (ignored by the engine validator, read by the designer) ──
+#
+# A connector is no longer a single spec file: it ships a shared `client` module
+# plus a set of `operations`. Each operation is a normal python_service with its
+# own `ui:` block; the designer renders a form (and dynamic-query preview) from
+# that block instead of a raw flowservice step.
+client: connectors/database/client.py
+operations:
+  - common.connectors.database.select
+  - common.connectors.database.insert
+  - common.connectors.database.update
+  - common.connectors.database.delete
+  - common.connectors.database.customQuery
+  - common.connectors.database.storedProcedure
+test:
+  description: Verifica la connessione eseguendo "SELECT 1".
+  client_fn: test_connection
+ui:
+  color: "#2f6f4f"
+  group: Data
+  menu: Database          # right-click → Database → <operation>

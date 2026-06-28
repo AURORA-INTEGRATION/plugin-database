@@ -1,0 +1,35 @@
+kind: python_service
+id: common.connectors.database.storedProcedure
+name: Database — Stored Procedure
+script: connectors/database/operations/storedProcedure/storedProcedure.py
+input:
+  db_alias:
+    type: string
+    required: true
+    description: Nome dell'istanza connector di tipo database.
+  name:
+    type: string
+    required: true
+    description: Nome della stored procedure (eventualmente schema-qualified, es. dbo.myProc).
+  args:
+    type: object
+    required: false
+    description: "Mappa nome → valore degli argomenti (passati come parametri nominati)."
+output:
+  rows:
+    type: array
+    description: Result set restituito dalla procedura (se presente).
+  count:
+    type: integer
+    description: Numero di righe restituite.
+  sql:
+    type: string
+    description: Statement di chiamata eseguito.
+
+ui:
+  mode: form
+  operation: storedProcedure
+  fields:
+    - { name: name, label: Procedura, type: proc-picker, source: procedures, required: true }
+    - { name: args, label: Argomenti, type: keyvalue, dependsOn: name }
+  preview: sql

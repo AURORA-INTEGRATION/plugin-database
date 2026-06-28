@@ -1,0 +1,42 @@
+kind: python_service
+id: common.connectors.database.customQuery
+name: Database — Custom Query
+script: connectors/database/operations/customQuery/customQuery.py
+input:
+  db_alias:
+    type: string
+    required: true
+    description: Nome dell'istanza connector di tipo database.
+  sql:
+    type: string
+    required: true
+    description: SQL libero. Usa parametri nominati `:nome` (mai concatenare stringhe).
+  params:
+    type: object
+    required: false
+    description: Valori dei parametri nominati.
+  write:
+    type: boolean
+    required: false
+    description: Forza modalità scrittura (ritorna affected_rows). Se omesso, dedotta dalla query.
+output:
+  rows:
+    type: array
+    description: Righe (per query che restituiscono un result set).
+  count:
+    type: integer
+    description: Numero di righe restituite.
+  affected_rows:
+    type: integer
+    description: Righe interessate (per comandi di scrittura).
+  sql:
+    type: string
+    description: SQL eseguito.
+
+ui:
+  mode: code
+  operation: customQuery
+  fields:
+    - { name: sql, label: SQL, type: code, language: sql, required: true }
+    - { name: params, label: Parametri, type: keyvalue }
+    - { name: write, label: Scrittura, type: boolean }

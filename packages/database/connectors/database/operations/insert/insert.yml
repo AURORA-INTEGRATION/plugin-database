@@ -1,0 +1,32 @@
+kind: python_service
+id: common.connectors.database.insert
+name: Database — Insert
+script: connectors/database/operations/insert/insert.py
+input:
+  db_alias:
+    type: string
+    required: true
+    description: Nome dell'istanza connector di tipo database.
+  table:
+    type: string
+    required: true
+    description: Tabella in cui inserire.
+  values:
+    type: object
+    required: true
+    description: "Mappa colonna → valore da inserire."
+output:
+  affected_rows:
+    type: integer
+    description: Righe inserite.
+  sql:
+    type: string
+    description: SQL effettivamente eseguito.
+
+ui:
+  mode: query-builder
+  operation: insert
+  fields:
+    - { name: table, label: Tabella, type: table-picker, source: tables, required: true }
+    - { name: values, label: Valori, type: column-form, source: columns, dependsOn: table }
+  preview: sql
