@@ -1,6 +1,7 @@
 name: database
 version: 1.0.0
 description: Database connector for Aurora (PostgreSQL, MySQL, SQLite, MSSQL, Oracle) — select/insert/update/delete/customQuery/storedProcedure with dynamic query builder.
+hidden: true   # connector-only package: services live under common.connectors.* — no empty tree node
 dependencies:
   - sqlalchemy
   # DBAPI drivers (SQLite is stdlib, no driver needed):
