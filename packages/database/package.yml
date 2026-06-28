@@ -3,3 +3,8 @@ version: 1.0.0
 description: Database connector for Aurora (PostgreSQL, MySQL, SQLite, MSSQL, Oracle) — select/insert/update/delete/customQuery/storedProcedure with dynamic query builder.
 dependencies:
   - sqlalchemy
+  # DBAPI drivers (SQLite is stdlib, no driver needed):
+  - psycopg2-binary   # PostgreSQL  (postgresql+psycopg2)
+  - pymysql           # MySQL/MariaDB (mysql+pymysql)
+  - oracledb          # Oracle      (oracle+oracledb, thin mode — no client libs)
+  - pyodbc            # MSSQL       (mssql+pyodbc — needs an ODBC driver installed on the OS)
